@@ -2,6 +2,11 @@
 
 Epost 是一套由三个 Codex Skills 组成的内容发布工作流：总控 Skill 负责收集素材、看板确认与授权，两个平台 Skill 分别负责小红书图文和 YouTube 英文视频的准备与发布。
 
+```bash
+git clone https://github.com/Andonywang123/Epost.git
+cd Epost
+```
+
 ## 组成
 
 | Skill | 作用 |
