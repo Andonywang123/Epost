@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>一键发布 · 分发看板</title>
+    <link rel="stylesheet" href="./dashboard.css">
+    <script src="./portable-host.js" defer></script>
+    <script src="./workflow.js" defer></script>
+    <script src="./dashboard.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">素材先确认，分发再授权</p>
+          <h1>一键发布</h1>
+          <p class="subtitle">素材发给 Agent；平台、发布／草稿、时间与最终许可都在看板选择。</p>
+        </div>
+        <button id="refresh-button" type="button" class="button secondary">刷新进度</button>
+      </header>
+
+      <div id="connection-status" class="connection-banner warning" role="status">
+        看板暂未连接，请启动一键发布程序后刷新。连接恢复前不能储存或发布。
+      </div>
+      <p id="session-label" class="session-label" hidden></p>
+      <p id="platform-connections" class="session-label" aria-live="polite"></p>
+      <div id="error-message" class="message error" role="alert" tabindex="-1" hidden></div>
+      <div id="status-message" class="message info" role="status" aria-live="polite" hidden></div>
+
+      <ol class="stepper" aria-label="当前流程">
+        <li data-step="media"><button type="button" class="step-button" data-go-step="media"><span class="step-number">1</span><span>聊天上传主素材</span></button></li>
+        <li data-step="metadata"><button type="button" class="step-button" data-go-step="metadata"><span class="step-number">2</span><span>聊天上传封面文案</span></button></li>
+        <li data-step="confirm"><button type="button" class="step-button" data-go-step="confirm"><span class="step-number">3</span><span>确认素材</span></button></li>
+        <li data-step="dashboard"><button type="button" class="step-button" data-go-step="dashboard"><span class="step-number">4</span><span>配置与分发</span></button></li>
+      </ol>
+      <p id="navigation-note" class="subtle">点击步骤可返回编辑；未保存的修改不会自动提交。</p>
+      <details id="agent-materials-help" class="agent-materials-help">
+        <summary>素材在聊天上传，设置与许可在看板完成</summary>
+        <p>请先在 Agent 聊天中选择“图文”或“视频”，再分两批发送主素材、封面／标题／正文，并要求“仅保存并导入当前批次，不处理、不发布”。Agent 导入后，回到这里核对素材，再选择平台、操作、时间、时区与最终许可；不用在聊天重复填写这些设置。</p>
+        <p>在本看板上传时，原文件只保存到本机共享工作目录；不会通过浏览器把附件自动发送给聊天应用。Agent 必须能访问该目录；不能访问时，请直接给该 Agent 上传素材。</p>
+      </details>
+
+      <section id="chat-materials-section" class="panel" aria-labelledby="chat-materials-heading">
+        <div class="section-heading"><span class="section-index">01–02</span><div><h2 id="chat-materials-heading">先在 Agent 聊天中上传素材</h2><p>聊天只收素材；分发设置与最终许可留在本看板。</p></div></div>
+        <ol class="chat-materials-steps"><li>告诉 Agent 本次选“图文”或“视频”，第一批上传一组图片或一个视频。</li><li>第二批一起提供封面、标题和正文，分别标明；不提供封面请明确说明。</li><li>Agent 只储存并导入当前批次。回到这里刷新，核对素材后进入平台与排期设置。</li></ol>
+        <p id="chat-materials-status" class="message info" role="status"></p>
+        <div class="button-row"><button id="refresh-materials-button" type="button" class="button primary">已在聊天上传，刷新素材</button><button id="use-web-upload-button" type="button" class="button secondary">备用方式：在网页上传／修改</button></div>
+      </section>
+      <div id="web-upload-mode" class="storage-notice" hidden>当前为备用网页上传方式；已保存的素材和另一部分文案均会保留。<button id="use-chat-upload-button" type="button" class="text-button">返回聊天上传提示</button></div>
+
+      <section id="kind-section" class="panel" aria-labelledby="kind-heading">
+        <div class="section-heading"><span class="section-index">01</span><div><h2 id="kind-heading">先选择本次内容类型</h2><p>选择后进入单独的上传路径，并匹配对应发布包。</p></div></div>
+        <fieldset id="kind-fields" disabled>
+          <legend>本次内容类型</legend>
+          <div class="choice-group">
+            <label class="choice"><input type="radio" name="content-kind" value="image_post"> 图文</label>
+            <label class="choice"><input type="radio" name="content-kind" value="video"> 视频</label>
+          </div>
+          <p id="kind-route-hint" class="subtle">请选择图文或视频，不会自动代选。</p>
+          <button id="select-kind-button" type="button" class="button primary">确认类型，进入上传</button>
+        </fieldset>
+      </section>
+
+      <section id="media-section" class="panel" aria-labelledby="media-heading">
+        <div class="section-heading"><span class="section-index">01</span><div><h2 id="media-heading">上传主素材</h2><p id="media-route-hint">按已选择的内容类型上传，不混合图片和视频。</p></div></div>
+        <button type="button" class="button secondary" data-go-step="kind">返回选择图文 / 视频</button>
+        <p class="storage-notice">本阶段仅将原始素材储存在本机共享工作目录，供 Agent 读取；不分析、不改写、不翻译、不生成字幕，也不调用任何平台。</p>
+        <fieldset id="media-fields" disabled>
+          <legend>第一批素材</legend>
+          <div id="stored-media-summary" class="message info" hidden></div>
+          <label class="upload-box" for="media-files"><span class="upload-title">选择本批素材</span><span id="media-file-hint">按原选择顺序保留，不自动排序或转换；需要调整顺序请重新选择。</span><input id="media-files" type="file" accept="image/*" multiple aria-describedby="media-file-hint"></label>
+          <ol id="pending-media-files" class="file-list" aria-label="待储存文件，按原选择顺序"></ol>
+          <div class="button-row"><button id="store-media-button" type="button" class="button primary">储存第一批素材</button><button id="cancel-media-edit" type="button" class="button secondary" hidden>放弃本步修改，返回</button></div>
+        </fieldset>
+      </section>
+
+      <section id="metadata-section" class="panel" aria-labelledby="metadata-heading" hidden>
+        <div class="section-heading"><span class="section-index">02</span><div><h2 id="metadata-heading">再上传封面、标题和正文</h2><p>分别标好字段，作为第二批一次储存，不自动润色。</p></div></div>
+        <p id="first-batch-summary" class="subtle"></p>
+        <fieldset id="metadata-fields" disabled>
+          <legend>第二批素材</legend>
+          <div class="form-grid">
+            <div class="field full-width"><label for="cover-file">封面</label><label id="keep-cover-label" class="check-line" hidden><input id="keep-cover" type="checkbox"><span id="keep-cover-text">保留已保存的封面</span></label><input id="cover-file" type="file" accept="image/*"><label class="check-line"><input id="cover-absent" type="checkbox"> 我明确不单独提供封面（是否可发布由平台能力决定）</label></div>
+            <div class="field full-width"><label for="title-file">标题文件（可选，TXT）</label><div class="file-source-row"><input id="title-file" type="file" accept=".txt,text/plain"><button id="clear-title-file" type="button" class="text-button" hidden>改为手动输入</button></div><span id="title-source-note" class="field-note">也可直接在下方输入标题；选择 TXT 后仅原样读取，不分析或改写。</span><label for="title-text">标题</label><textarea id="title-text" rows="2" placeholder="在这里输入标题，或选择上方的标题.txt" aria-describedby="title-source-note"></textarea></div>
+            <div class="field full-width"><label for="body-file">正文文件（可选，TXT）</label><div class="file-source-row"><input id="body-file" type="file" accept=".txt,text/plain"><button id="clear-body-file" type="button" class="text-button" hidden>改为手动输入</button></div><span id="body-source-note" class="field-note">TXT 内容会原样显示并保存，供你确认。</span><label for="body-text">正文</label><textarea id="body-text" rows="7" placeholder="在这里输入正文，或选择上方的正文.txt" aria-describedby="body-source-note"></textarea></div>
+          </div>
+          <div class="button-row"><button type="button" class="button secondary" data-go-step="media">上一步</button><button id="store-metadata-button" type="button" class="button primary">一起储存封面、标题和正文</button><button id="cancel-metadata-edit" type="button" class="button secondary" hidden>放弃本步修改，返回</button></div>
+        </fieldset>
+      </section>
+
+      <section id="materials-review-section" class="panel" aria-labelledby="materials-heading" hidden>
+        <div class="section-heading"><span class="section-index">03</span><div><h2 id="materials-heading">请确认上传是否正确</h2><p id="materials-review-note">核对顺序、封面和原文。确认前仍只做储存，不分发。</p></div></div>
+        <div id="materials-summary" class="materials-summary"></div>
+        <div id="materials-review-actions" class="button-row"><button id="confirm-materials-button" type="button" class="button primary">素材正确，进入发布看板</button><button id="edit-media-button" type="button" class="button secondary">返回修改图文 / 视频</button><button id="edit-metadata-button" type="button" class="button secondary">返回修改封面 / 文案</button></div>
+      </section>
+
+      <section id="dashboard-section" aria-labelledby="dashboard-heading" hidden>
+        <div class="dashboard-heading"><div><p class="eyebrow">多平台分发</p><h2 id="dashboard-heading">选择这次要去的平台</h2><p id="dashboard-description" class="subtle">可多选，每个平台分别设置操作、账号和时间。最终确认只保存交接任务，随后由 Agent 逐一调用发布包。</p></div><span id="stage-badge" class="badge neutral"></span></div>
+        <div id="route-summary" class="message info"></div>
+        <div id="agent-receiver-status" class="message info" role="status" aria-live="polite"></div>
+        <button type="button" class="button secondary" data-go-step="confirm">上一步：核对或修改素材</button>
+        <div id="confirmed-plan" class="confirmed-plan" hidden><h3>已确认任务（只读）</h3><div id="confirmed-plan-rows" class="confirmation-rows"></div><ul id="confirmed-plan-notices" class="notice-list"></ul></div>
+        <div id="configuration-controls">
+        <div id="platform-list" class="platform-list"></div>
+        <details class="other-platforms"><summary>查看其他平台及暂不可用原因</summary><ul id="unavailable-platforms"></ul></details>
+        <p id="plan-validation-message" class="validation-summary" aria-live="polite"></p>
+        <div class="dispatch-bar"><div><strong id="selected-count">尚未选择平台</strong><p>先核对摘要，再保存指令，交给 Agent 发布或存草稿。</p></div><button id="prepare-plan-button" type="button" class="button primary large" disabled>发布</button></div>
+        </div>
+      </section>
+
+      <section id="results-section" class="panel" aria-labelledby="results-heading" hidden>
+        <div class="section-heading"><div><h2 id="results-heading">任务状态</h2><p>看板会自动读取已保存进度；刷新不会取消、暂停或再次提交任务。</p></div></div>
+        <div id="execution-note" class="message info"></div>
+        <div id="agent-handoff" class="agent-handoff" hidden>
+          <h3 id="agent-next-step">接收器未就绪时的处理</h3>
+          <p id="agent-handoff-instruction">请回到 Agent 应用，要求启用当前素材批次的接收器；无需重新填写或确认相同设置。</p>
+          <p class="subtle">已就绪的 Agent 会读取同一工作目录里的已确认字段，并传给对应发布包。本面板不会启动执行进程。若接收器不可用，可用以下定位信息让 Agent 核对已保存任务。</p>
+          <details id="handoff-details"><summary>故障备用：查看／复制任务定位信息</summary><label for="agent-handoff-text">交给能访问同一本机目录的 Agent</label><textarea id="agent-handoff-text" rows="7" readonly spellcheck="false"></textarea><button id="copy-handoff-button" type="button" class="button secondary">复制交接信息</button><p id="handoff-copy-message" class="subtle" role="status" aria-live="polite"></p></details>
+          <p id="handoff-unavailable" class="subtle" hidden>任务定位信息尚未完整返回，请刷新进度，或让当前 Agent 在现有工作目录中查找已确认任务；不要重新提交。</p>
+        </div>
+        <p id="result-receipt-note" class="subtle">以下为 Agent 调用平台发布包后保存的实际回执。“已接收”不代表“已公开发布”。</p>
+        <ol id="result-list" class="result-list"></ol>
+        <div class="button-row"><button id="new-session-button" type="button" class="button secondary" hidden>新建素材批次</button></div>
+      </section>
+
+      <footer class="page-footer">素材与确认记录保存在本机。看板不执行发布；Agent 核验已确认任务后，才会调用所选平台发布包。</footer>
+    </main>
+
+    <dialog id="confirmation-dialog" aria-labelledby="confirmation-question" aria-describedby="confirmation-description">
+      <div class="dialog-content">
+        <p class="eyebrow">最后确认</p>
+        <h2 id="confirmation-question">您确认要在所选平台发布吗？</h2>
+        <p id="confirmation-description" class="subtle">请逐项核对操作、账号和时间。选择“是”保存这份最终许可；已就绪的 Agent 接收器会读取已确认字段并交给对应发布包，无需在聊天重填。“一键草稿”不会变成公开发布，面板本身不执行发布。</p>
+        <div id="confirmation-receiver-status" class="message info" role="status" aria-live="polite"></div>
+        <div id="confirmation-rows" class="confirmation-rows"></div>
+        <ul id="confirmation-notices" class="notice-list"></ul>
+        <div id="confirmation-error" class="message error" role="alert" hidden></div>
+        <div class="button-row dialog-actions"><button id="confirm-no-button" type="button" class="button secondary">否，返回调整</button><button id="confirm-yes-button" type="button" class="button primary">是，保存任务交给 Agent</button><button id="confirm-refresh-button" type="button" class="button secondary" hidden>刷新任务状态</button></div>
+      </div>
+    </dialog>
+    <noscript><p class="noscript-warning">请启用 JavaScript 并启动一键发布程序，才能储存素材、确认任务或查看进度。发布由 Agent 应用执行。</p></noscript>
+  </body>
+</html>

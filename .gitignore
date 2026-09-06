@@ -1,0 +1,34 @@
+.DS_Store
+Thumbs.db
+
+# Re-creatable dependencies and caches
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+.env.*
+.epost/
+
+# Local publishing state and outputs
+config.local.json
+*.local.json
+output/
+outputs/
+publish-jobs/
+sessions/
+uploads/
+playwright-report/
+test-results/
+traces/
+screenshots/
+*.log
+
+# Credentials and browser state
+*.token.json
+client_secret*.json
+credentials*.json
+chrome-profile/
+browser-profile/

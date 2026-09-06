@@ -1,0 +1,7 @@
+interface:
+  display_name: "小红书一键发布"
+  short_description: "自动配话题和活动，精确执行草稿、直发或定时发布"
+  default_prompt: "使用 $xiaohongshu-publish 分析标题正文、匹配话题与可用活动，再按我给出的 draft、publish 或 schedule 判定精确执行。"
+  brand_color: "#FF2442"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "note": "供宿主绑定的能力模板，不代表已经接入或登录；available 由宿主完成注册后设置。",
+  "platforms": [
+    {"platform":"xiaohongshu","label":"小红书","skillName":"xiaohongshu-publish","available":false,"mediaKinds":["image_post"],"modes":["draft","publish","schedule"],"draftScope":"platform","minLeadMinutes":60,"accounts":[],"reason":"待宿主绑定现有小红书发布包与账号"},
+    {"platform":"douyin","label":"抖音","skillName":null,"available":false,"mediaKinds":[],"modes":[],"draftScope":null,"accounts":[],"reason":"尚未接入对应发布包"},
+    {"platform":"wechat_channels","label":"微信视频号","skillName":null,"available":false,"mediaKinds":[],"modes":[],"draftScope":null,"accounts":[],"reason":"尚未接入对应发布包"},
+    {"platform":"bilibili","label":"B站","skillName":null,"available":false,"mediaKinds":[],"modes":[],"draftScope":null,"accounts":[],"reason":"尚未接入对应发布包"},
+    {"platform":"youtube","label":"YouTube","skillName":"youtube-publish","available":false,"mediaKinds":["video"],"modes":["draft","publish","schedule"],"draftScope":"local","minLeadMinutes":0,"accounts":[],"reason":"待宿主绑定现有 YouTube 发布包与账号"},
+    {"platform":"instagram","label":"Instagram（ins）","skillName":null,"available":false,"mediaKinds":[],"modes":[],"draftScope":null,"accounts":[],"reason":"尚未接入对应发布包"},
+    {"platform":"tiktok","label":"TikTok","skillName":null,"available":false,"mediaKinds":[],"modes":[],"draftScope":null,"accounts":[],"reason":"尚未接入对应发布包"},
+    {"platform":"x","label":"X","skillName":null,"available":false,"mediaKinds":[],"modes":[],"draftScope":null,"accounts":[],"reason":"尚未接入对应发布包"}
+  ]
+}

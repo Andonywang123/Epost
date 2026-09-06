@@ -1,0 +1,10 @@
+-r requirements.txt
+# Default offline localizer: Argos translates Chinese to English and
+# faster-whisper creates timed Chinese speech captions on-device.
+argostranslate>=1.9,<2
+faster-whisper>=1.1,<2
+rapidocr-onnxruntime>=1.4,<2
+# OpenAI remains an explicit compatibility provider (--translation-provider openai).
+openai>=2.0,<3
+Pillow>=11,<13
+imageio-ffmpeg>=0.5,<1

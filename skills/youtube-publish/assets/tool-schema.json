@@ -1,0 +1,40 @@
+{
+  "type": "function",
+  "function": {
+    "name": "youtube_publish",
+    "description": "Validate, save a local YouTube draft, dispatch an upstream draft/publish/schedule decision, upload, preflight, authorize, or disconnect. Draft/publish/schedule/dispatch require exact authorization plus commit=true.",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "command": {
+          "type": "string",
+          "enum": ["validate", "dry_run", "auth", "preflight", "draft", "publish", "schedule", "dispatch", "upload", "disconnect"]
+        },
+        "decision": {
+          "type": ["string", "null"],
+          "enum": ["draft", "publish", "schedule", null],
+          "description": "Required only for dispatch and must equal the manifest mode."
+        },
+        "manifest": {
+          "type": ["string", "null"],
+          "description": "Absolute manifest path for validate, dry_run, draft, publish, schedule, dispatch, or legacy upload; otherwise null."
+        },
+        "profile": {
+          "type": ["string", "null"],
+          "description": "Local authorization profile for auth, preflight, or disconnect; otherwise null."
+        },
+        "client_secrets": {
+          "type": ["string", "null"],
+          "description": "Absolute Google Desktop OAuth client JSON path for auth only; otherwise null."
+        },
+        "commit": {
+          "type": "boolean",
+          "description": "True only after exact authorization for draft, publish, schedule, dispatch, or legacy upload; false otherwise."
+        }
+      },
+      "required": ["command", "decision", "manifest", "profile", "client_secrets", "commit"],
+      "additionalProperties": false
+    }
+  }
+}

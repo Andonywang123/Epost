@@ -1,0 +1,94 @@
+{
+  "version": 3,
+  "urls": {
+    "home": "https://creator.xiaohongshu.com/new/home",
+    "imagePublisher": "https://creator.xiaohongshu.com/publish/publish?target=image",
+    "noteManager": "https://creator.xiaohongshu.com/new/note-manager"
+  },
+  "selectors": {
+    "fileInput": "input[type=\"file\"][accept*=\".png\"]",
+    "titleInput": "input[placeholder*=\"填写标题\"]",
+    "bodyEditor": "[contenteditable=\"true\"]",
+    "publishHost": "xhs-publish-btn",
+    "scheduleToggle": ".post-time-wrapper .d-switch",
+    "scheduleCheckbox": ".post-time-wrapper input[type=\"checkbox\"]",
+    "scheduleInput": ".post-time-wrapper .date-picker-container input.d-text",
+    "topicTrigger": "#topicBtn",
+    "topicSearchInputs": [
+      "[role=\"dialog\"] input[placeholder*=\"话题\"]",
+      "[role=\"dialog\"] input[placeholder*=\"搜索\"]",
+      "[role=\"listbox\"] input"
+    ],
+    "topicCandidates": [
+      ".recommend-topic-wrapper .tag",
+      "[role=\"dialog\"] [role=\"option\"]",
+      "[role=\"dialog\"] [role=\"listitem\"]",
+      "[role=\"listbox\"] [role=\"option\"]"
+    ],
+    "activityCandidates": [
+      ".activity-plugin .activity-card",
+      "[role=\"dialog\"] [role=\"option\"]",
+      "[role=\"dialog\"] [role=\"listitem\"]"
+    ],
+    "activityDetails": [
+      ".event-detail-drawer",
+      "[role=\"dialog\"]"
+    ],
+    "activityRequiredTags": [
+      ".event-detail-drawer",
+      "[role=\"dialog\"] [data-topic]",
+      "[role=\"dialog\"] [class*=\"topic\"]",
+      "[role=\"dialog\"] [class*=\"tag\"]"
+    ]
+  },
+  "signals": {
+    "loggedIn": [
+      "创作服务平台",
+      "发布笔记",
+      "笔记管理"
+    ],
+    "needsLogin": [
+      "扫码登录",
+      "手机号登录",
+      "登录后开始创作"
+    ],
+    "needsUser": [
+      "验证码",
+      "安全验证",
+      "请完成验证",
+      "账号存在异常"
+    ],
+    "draftActions": [
+      "暂存离开",
+      "保存草稿"
+    ],
+    "publishActions": [
+      "发布"
+    ],
+    "scheduleActions": [
+      "定时发布"
+    ],
+    "topicActions": [
+      "添加话题",
+      "话题",
+      "# 话题"
+    ],
+    "activityActions": [
+      "参与活动",
+      "添加活动",
+      "选择活动",
+      "关联活动",
+      "活动"
+    ],
+    "draftSuccess": [
+      "已保存",
+      "保存成功",
+      "草稿箱"
+    ],
+    "submitted": [
+      "发布成功",
+      "审核中",
+      "已提交"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "job_id": "epost-xhs-example-001",
+  "account_profile": "main",
+  "mode": "draft",
+  "title": "不超过20个字符的标题",
+  "body": "正文，不超过1000个字符。",
+  "images": [
+    "/absolute/path/to/01.png"
+  ],
+  "tags": [
+    "话题一",
+    "话题二"
+  ],
+  "auto_tags": true,
+  "tag_limit": 8,
+  "hot_tag": null,
+  "visibility": "公开",
+  "activity": null,
+  "activity_mode": "auto",
+  "schedule_at": null
+}

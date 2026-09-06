@@ -1,0 +1,8 @@
+{
+  "name": "youtube-publish-browser-runtime",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {"test": "node --test scripts/test_youtube_browser.cjs"},
+  "dependencies": {"playwright": "1.62.1"}
+}

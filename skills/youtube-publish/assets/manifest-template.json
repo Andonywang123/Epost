@@ -1,0 +1,26 @@
+{
+  "job_id": "youtube-example-001",
+  "account_profile": "main",
+  "mode": "draft",
+  "video": "/absolute/path/to/video.mp4",
+  "title": "视频标题",
+  "description": "视频简介",
+  "tags": [
+    "示例"
+  ],
+  "auto_tags": true,
+  "tag_region": "US",
+  "category_id": "22",
+  "default_language": "zh-CN",
+  "privacy": "private",
+  "publish_at": null,
+  "made_for_kids": false,
+  "contains_synthetic_media": null,
+  "notify_subscribers": false,
+  "thumbnail": null,
+  "caption": null,
+  "caption_language": null,
+  "caption_name": null,
+  "localization_manifest": null,
+  "poll_processing": true
+}

@@ -1,0 +1,12 @@
+{
+  "name": "xiaohongshu-publish-skill-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check scripts/xhs_publisher.mjs && node --check scripts/xhs_tool_bridge.mjs && zsh -n scripts/start_chrome_cdp.sh && python3 scripts/test_payload.py && node scripts/test_schedule.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.62.1"
+  }
+}

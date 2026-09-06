@@ -1,0 +1,6 @@
+interface:
+  display_name: "一键发布总控"
+  short_description: "汇总素材和发布需求，看板授权后交给 Agent 触发平台包，不做平台准备"
+  default_prompt: "使用 $one-click-publish，聊天只收存素材，看板确认发布需求与许可，再由 Agent 原样交接并触发对应平台包；所有准备及发布工作留在平台包内部。"
+policy:
+  allow_implicit_invocation: true

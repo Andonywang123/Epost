@@ -1,0 +1,35 @@
+{
+  "localTimezone": "Asia/Shanghai",
+  "platforms": [
+    {
+      "platform": "xiaohongshu",
+      "label": "小红书",
+      "available": false,
+      "mediaKinds": ["image_post"],
+      "modes": ["draft", "publish", "schedule"],
+      "draftScope": "platform",
+      "minLeadMinutes": 60,
+      "accounts": [],
+      "requireAccountConfirmation": true,
+      "requiredPostSettings": [],
+      "requiredFiles": ["/absolute/xiaohongshu-publish/scripts/upstream_dispatch.py"],
+      "reason": "填写运行时和账号（settings.visibility 固定为公开，最终确认中注明）后再启用",
+      "command": ["/absolute/python3", "/absolute/xiaohongshu-publish/scripts/upstream_dispatch.py", "--output-root", "/absolute/publish-jobs"]
+    },
+    {
+      "platform": "youtube",
+      "label": "YouTube",
+      "available": false,
+      "mediaKinds": ["video"],
+      "modes": ["draft", "publish", "schedule"],
+      "draftScope": "local",
+      "minLeadMinutes": 0,
+      "accounts": [],
+      "requireAccountConfirmation": true,
+      "requiredPostSettings": ["privacy", "made_for_kids", "contains_synthetic_media", "notify_subscribers"],
+      "requiredFiles": ["/absolute/youtube-publish/scripts/upstream_dispatch.py"],
+      "reason": "填写运行时、OAuth账号和受众/公开范围声明后再启用",
+      "command": ["/absolute/python3", "/absolute/youtube-publish/scripts/upstream_dispatch.py", "--output-root", "/absolute/publish-jobs"]
+    }
+  ]
+}

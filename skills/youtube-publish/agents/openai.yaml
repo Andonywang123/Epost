@@ -1,0 +1,4 @@
+interface:
+  display_name: "YouTube 英文一键发布"
+  short_description: "本地完成中英翻译、字幕和封面英化，再连接专用 Chrome 发布或定时，草稿仍保存在本地"
+  default_prompt: "使用 $youtube-publish，通过本地英化、字幕和封面准备，再连接专用 Chrome，按已确认的 draft、publish 或 schedule 指令执行，不重复上传。"

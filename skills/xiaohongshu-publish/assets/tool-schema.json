@@ -1,0 +1,47 @@
+{
+  "type": "function",
+  "function": {
+    "name": "xiaohongshu_publish",
+    "description": "Validate, inspect, fill, dispatch an upstream draft/publish/schedule decision, schedule, publish, or verify one local Xiaohongshu image-post manifest. Mutating commands require exact user authorization and commit=true.",
+    "strict": true,
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "command": {
+          "type": "string",
+          "enum": ["validate", "preflight", "fill", "draft", "schedule", "publish", "dispatch", "verify"]
+        },
+        "decision": {
+          "type": ["string", "null"],
+          "enum": ["draft", "publish", "schedule", null],
+          "description": "Required only for dispatch. Must equal the manifest mode exactly."
+        },
+        "manifest": {
+          "type": ["string", "null"],
+          "description": "Absolute manifest path; null only for preflight."
+        },
+        "profile_dir": {
+          "type": ["string", "null"],
+          "description": "Absolute dedicated Chrome profile path for managed-launch fallback; otherwise null."
+        },
+        "cdp_url": {
+          "type": ["string", "null"],
+          "description": "Preferred existing Chrome CDP URL, such as http://127.0.0.1:9222; null only for validate or managed-launch fallback."
+        },
+        "commit": {
+          "type": "boolean",
+          "description": "True only after exact authorization for fill, draft, schedule, publish, or dispatch."
+        },
+        "keep_open": {
+          "type": "boolean"
+        },
+        "screenshot": {
+          "type": ["string", "null"],
+          "description": "Optional absolute output path."
+        }
+      },
+      "required": ["command", "decision", "manifest", "profile_dir", "cdp_url", "commit", "keep_open", "screenshot"],
+      "additionalProperties": false
+    }
+  }
+}
